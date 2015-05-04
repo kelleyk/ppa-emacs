@@ -10202,7 +10202,7 @@ xim_close_dpy (struct x_display_info *dpyinfo)
 #ifdef HAVE_X11R6_XIM
       struct xim_inst_t *xim_inst = dpyinfo->xim_callback_data;
 
-      if (dpyinfo->display)
+      if (X_DISPLAY_CONNECTED (dpyinfo->display))
 	{
 	  Bool ret = XUnregisterIMInstantiateCallback
 	    (dpyinfo->display, dpyinfo->xrdb, xim_inst->resource_name,
@@ -10213,7 +10213,7 @@ xim_close_dpy (struct x_display_info *dpyinfo)
       xfree (xim_inst->resource_name);
       xfree (xim_inst);
 #endif /* HAVE_X11R6_XIM */
-      if (dpyinfo->display)
+      if (X_DISPLAY_CONNECTED (dpyinfo->display))
 	XCloseIM (dpyinfo->xim);
       dpyinfo->xim = NULL;
       XFree (dpyinfo->xim_styles);
@@ -11753,7 +11753,7 @@ x_free_frame_resources (struct frame *f)
 
   /* If a display connection is dead, don't try sending more
      commands to the X server.  */
-  if (dpyinfo->display)
+  if (X_DISPLAY_CONNECTED (dpyinfo->display))
     {
       /* Always exit with visible pointer to avoid weird issue
 	 with Xfixes (Bug#17609).  */
@@ -11911,7 +11911,7 @@ x_destroy_window (struct frame *f)
 
   /* If a display connection is dead, don't try sending more
      commands to the X server.  */
-  if (dpyinfo->display != 0)
+  if (X_DISPLAY_CONNECTED (dpyinfo->display))
     x_free_frame_resources (f);
 
   dpyinfo->reference_count--;
@@ -13084,7 +13084,7 @@ x_delete_terminal (struct terminal *terminal)
 #endif
 
   /* Normally, the display is available...  */
-  if (dpyinfo->display)
+  if (X_DISPLAY_CONNECTED (dpyinfo->display))
     {
       x_destroy_all_bitmaps (dpyinfo);
       XSetCloseDownMode (dpyinfo->display, DestroyAll);
