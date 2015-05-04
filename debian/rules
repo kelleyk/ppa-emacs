@@ -1,0 +1,166 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+
+# This file is licensed under the terms of the Gnu Public License.
+# Copyright 2013 Robert Bruce Park <r@robru.ca>
+
+
+# Some inspiration taken from the Emacs' debian/rules file created by
+# Mark Eichin, Ian Jackson, Jérôme Marant, and Rob Browning, however
+# the code below was largely rewritten from scratch in 2013.
+
+
+# This packaging data is intended to be usable both for building
+# snapshots or for building stable release packages. Everything here
+# parses debian/changelog in order to determine what kind of package
+# names to use. Debian is a little bit fussy about needing
+# debian/control to exist before it'll allow debian/rules to
+# create it, so unfortunately we need both control and control.in
+# checked into version control. Currently this branch is set up for
+# snapshot builds, however if you want to package a stable release,
+# all you have to do is change "emacs-snapshot" to "emacs24" in
+# debian/changelog, and then run this command:
+#
+#    $ make -f debian/rules debian/control
+#
+# That will rebuild debian/control with the new package names, and
+# you'll then be able to proceed with the package build as usual.
+
+
+# What suffix should we append to "emacs" to make it parallel-installable?
+# Generally "-snapshot", however it could be "23" or "24" as necessary.
+suffix = $(shell dpkg-parsechangelog  \
+		| perl -ne 's/Source: emacs// && print && exit')
+
+# common configure flags
+confflags += --prefix=/usr
+confflags += --sharedstatedir=/var/lib
+confflags += --program-suffix="$(suffix)"
+
+# These package names are used to create debian/control
+src_pkg_name = emacs$(suffix)
+gtk_pkg_name = $(src_pkg_name)
+nox_pkg_name = $(gtk_pkg_name)-nox
+
+# Gtk config options
+confflags_gtk += $(confflags)
+confflags_gtk += --with-x=yes
+confflags_gtk += --with-x-toolkit=gtk3
+
+# Gtk dh options
+auto_gtk += --package=$(gtk_pkg_name)
+auto_gtk += --builddirectory=build/gtk
+
+# NoX config options
+confflags_nox += $(confflags)
+confflags_nox += --with-x=no
+
+# NoX dh options
+auto_nox += --package=$(nox_pkg_name)
+auto_nox += --builddirectory=build/nox
+
+# These files are created from emacsVER templates
+autogen_install_files :=  \
+  debian/$(gtk_pkg_name).install  \
+  debian/$(gtk_pkg_name).postinst  \
+  debian/$(gtk_pkg_name).prerm  \
+  debian/$(nox_pkg_name).install  \
+  debian/$(nox_pkg_name).postinst  \
+  debian/$(nox_pkg_name).prerm
+
+define deb_sub
+  perl -p  \
+    -e "s|\@SUFFIX\@|$(suffix)|go;"  \
+    -e "s|\@PKG_NAME\@|$(pkg_name)|go;"  \
+    -e "s|\@SRC_PKG_NAME\@|$(src_pkg_name)|go;"  \
+    -e "s|\@GTK_PKG_NAME\@|$(gtk_pkg_name)|go;"  \
+    -e "s|\@NOX_PKG_NAME\@|$(nox_pkg_name)|go;"  \
+      < $(1) > $(2)
+endef
+
+# Set pkg_name depending on which we are currently building.
+debian/$(gtk_pkg_name).%: pkg_name := $(gtk_pkg_name)
+debian/$(nox_pkg_name).%: pkg_name := $(nox_pkg_name)
+
+# Build emacs-snapshot.{install,...} from emacsVER.{install,...}
+debian/$(gtk_pkg_name).%: debian/emacsVER.%
+	$(call deb_sub,$<,$@)
+
+# Build emacs-snapshot-nox.{install,...} from emacsVER.{install,...}
+debian/$(nox_pkg_name).%: debian/emacsVER.%
+	$(call deb_sub,$<,$@)
+
+# Build control from control.in.
+debian/%: debian/%.in debian/changelog debian/rules
+	$(call deb_sub,$<,$@)
+
+override_dh_auto_clean:
+	dh_auto_clean $(auto_gtk)
+	dh_auto_clean $(auto_nox)
+
+override_dh_auto_configure:
+	./autogen.sh
+	dh_auto_configure $(auto_gtk) -- $(confflags_gtk)
+	dh_auto_configure $(auto_nox) -- $(confflags_nox)
+
+override_dh_auto_build: debian/control
+	dh_auto_build $(auto_gtk)
+	dh_auto_build $(auto_nox)
+
+# Run tests, but don't allow failures to stop the build.
+override_dh_auto_test:
+	dh_auto_test $(auto_gtk) || true
+	dh_auto_test $(auto_nox) || true
+
+# By default dh_auto_install will dump both packages into debian/tmp,
+# with the second one clobbering the first one, so we used --destdir to
+# force installation into different places.
+override_dh_auto_install: $(autogen_install_files)
+	dh_auto_install $(auto_gtk) --destdir=debian/$(gtk_pkg_name)
+	dh_auto_install $(auto_nox) --destdir=debian/$(nox_pkg_name)
+#
+#	Find the binaries that we need to pass to update-alternatives.
+	alternatives=`ls debian/$(gtk_pkg_name)/usr/bin | xargs`  \
+	  && set -x  \
+	  && for f in debian/emacs*.*;  \
+	  do  \
+	    perl -pwi -e "s|\@ALTERNATIVES\@|$${alternatives}|go" $$f;  \
+	  done
+
+# Use of --destdir above causes the default dh_install to fail,
+# because it looks for files in debian/tmp (which does not exist). So
+# override it to instead delete the files we don't want
+override_dh_install:
+#	Strip images from NoX.
+	rm -rf debian/$(nox_pkg_name)/usr/share/emacs/*/etc/images
+#
+#	Strip some unnecessary dirs
+	rm -rf debian/*/var/
+	rm -rf debian/*/usr/local
+#
+#	And some things lintian doesn't like
+	rm -rf debian/*/usr/share/emacs/*/etc/copying.paper
+	rm -rf debian/*/usr/share/emacs/*/lisp/COPYING
+#
+#	Identify identical files, move them into -common, and delete them
+#	from the other binary packages.
+	mkdir -p debian/$(src_pkg_name)-common
+	diff --ignore-all-space --recursive --brief --report-identical-files  \
+		debian/$(gtk_pkg_name) debian/$(nox_pkg_name)  \
+		| egrep -v '(/usr/lib|/usr/bin)'  \
+		| perl -ne 's/^Files (.*) and (.*) are identical/\1\n\2/ && print'  \
+		| tar cpf - --files-from - --remove-files  \
+		| tar xpf - --directory debian/$(src_pkg_name)-common  \
+		--strip-components=2 --overwrite
+#
+#	Move non-byte-compiled versions of byte-compiled files into -el package.
+	mkdir -p debian/$(src_pkg_name)-el
+	find debian/ -name '*.elc'  \
+		| perl -pe 's/(.*)\.elc/\1.el.gz/g'  \
+		| tar cpf - --files-from - --remove-files --ignore-failed-read  \
+		| tar xpf - --directory debian/$(src_pkg_name)-el  \
+		--strip-components=2 --overwrite
+
+%:
+	dh $@ --parallel
