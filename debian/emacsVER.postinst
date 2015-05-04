@@ -1,0 +1,20 @@
+#!/bin/sh
+
+set -e
+
+mandir="/usr/share/man/man1"
+
+# update-alternatives on things that collide with xemacs, other editors
+for alt in @ALTERNATIVES@
+do
+    base=$(echo $alt | perl -pe 's/@SUFFIX@$//')
+    man=""
+
+    if [ -s $mandir/$alt.1.gz ]; then
+        man="--slave $mandir/$base.1.gz $base.1.gz $mandir/$alt.1.gz"
+    fi
+
+    update-alternatives --install /usr/bin/$base $base /usr/bin/$alt 27 $man
+done
+
+#DEBHELPER#
