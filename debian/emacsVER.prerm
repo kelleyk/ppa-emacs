@@ -1,0 +1,15 @@
+#!/bin/sh
+
+set -e
+
+# update-alternatives on things that collide with xemacs, other editors
+if [ "$1" != "upgrade" ]
+then
+    for alt in @ALTERNATIVES@
+    do
+        base=$(echo $alt | perl -pe 's/@SUFFIX@$//')
+        update-alternatives --remove $base /usr/bin/$alt
+    done
+fi
+
+#DEBHELPER#
