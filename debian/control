@@ -1,4 +1,4 @@
-Source: emacs-snapshot
+Source: emacs25
 Section: editors
 Priority: optional
 Maintainer: Robert Bruce Park <r@robru.ca>
@@ -33,7 +33,7 @@ Build-Depends: autoconf,
 Homepage: http://www.gnu.org/software/emacs/
 Standards-Version: 3.9.4
 
-Package: emacs-snapshot-common
+Package: emacs25-common
 Architecture: all
 Depends: emacsen-common,
          ${misc:Depends},
@@ -41,33 +41,33 @@ Description: GNU Emacs editor (common files used by Gtk and NoX variants)
  GNU Emacs is the extensible self-documenting text editor.
  This package contains the files that are shared between Gtk and NoX builds.
 
-Package: emacs-snapshot
+Package: emacs25
 Architecture: any
-Depends: emacs-snapshot-common,
+Depends: emacs25-common,
          ${misc:Depends},
          ${shlibs:Depends},
 Provides: editor, emacsen, info-browser, mail-reader, news-reader
-Conflicts: emacs-snapshot-nox,
-Replaces: emacs-snapshot-nox,
+Conflicts: emacs25-nox,
+Replaces: emacs25-nox,
 Description: GNU Emacs editor (with GTK+ user interface)
  GNU Emacs is the extensible self-documenting text editor.
  This package contains a version of Emacs with a GTK+ user interface.
 
-Package: emacs-snapshot-nox
+Package: emacs25-nox
 Architecture: any
-Depends: emacs-snapshot-common,
+Depends: emacs25-common,
          ${misc:Depends},
          ${shlibs:Depends},
 Provides: editor, emacsen, info-browser, mail-reader, news-reader
-Conflicts: emacs-snapshot,
-Replaces: emacs-snapshot,
+Conflicts: emacs25,
+Replaces: emacs25,
 Description: GNU Emacs editor (with text-only user interface)
  GNU Emacs is the extensible self-documenting text editor.
  This package contains a version of Emacs without a graphical user interface.
 
-Package: emacs-snapshot-el
+Package: emacs25-el
 Architecture: all
-Depends: emacs-snapshot-common,
+Depends: emacs25-common,
          ${misc:Depends},
 Description: GNU Emacs editor (uncompiled Elisp files)
  GNU Emacs is the extensible self-documenting text editor.
