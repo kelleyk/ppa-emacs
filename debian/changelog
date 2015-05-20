@@ -1,4 +1,12 @@
-emacs-snapshot (2:2015.05.04~kk1~ubuntu14.10.1) utopic; urgency=low
+emacs25 (25.1~1.gitf0eb70d-kk1) UNRELEASED; urgency=low
+
+   ** SNAPSHOT build @f0eb70d8935be90f7c03e187c12d9b60e7214cc6 **
+
+   * Upstrema release emacs-25.1.
+
+ -- Kevin Kelley <kelleyk@kelleyk.net>  Mon, 04 May 2015 11:34:09 -0700
+
+emacs25 (25.0.50.1~1.gitfe4e25-kk1) UNRELEASED; urgency=low
 
   ** SNAPSHOT build @fe4e258b17feb529ac364daee67a5f0441f851f4 **
 
