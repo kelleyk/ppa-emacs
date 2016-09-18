@@ -23,9 +23,6 @@ along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>.  */
 #include <X11/Xlib.h>
 #include <X11/cursorfont.h>
 
-/* Xlib's "internal" header; we need this for the definition of XlibDisplayIOError. */
-#include <X11/Xlibint.h>
-
 /* Include Xutil.h after keysym.h to work around a bug that prevents
    correct recognition of AltGr key in some X versions.  */
 
@@ -876,8 +873,6 @@ extern void x_mark_frame_dirty (struct frame *f);
 #define FRAME_X_XIM_STYLES(f) (FRAME_DISPLAY_INFO (f)->xim_styles)
 #define FRAME_XIC_STYLE(f) ((f)->output_data.x->xic_style)
 #define FRAME_XIC_FONTSET(f) ((f)->output_data.x->xic_xfs)
-
-#define X_DISPLAY_CONNECTED(display) ((display != NULL) && !(display->flags & XlibDisplayIOError))
 
 /* X-specific scroll bar stuff.  */
 
