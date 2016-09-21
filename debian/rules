@@ -33,10 +33,22 @@
 suffix = $(shell dpkg-parsechangelog  \
 		| perl -ne 's/Source: emacs// && print && exit')
 
+DISTRIB_RELEASE = "$(shell grep DISTRIB_RELEASE /etc/lsb-release | cut -d= -f2)"
+ifeq ($(shell dpkg --compare-versions "$(DISTRIB_RELEASE)" ge "16.10" && echo "yes"),yes)
+  ifneq (,$(filter $(DEB_HOST_ARCH),amd64 ppc64el s390x))
+    # These flags are necessary on 16.10 and later, but break builds on earlier releases (14.04, for example).
+    export DEB_CFLAGS_MAINT_APPEND=-no-pie
+    export DEB_LDFLAGS_MAINT_APPEND=-no-pie
+    # export DEB_BUILD_MAINT_OPTIONS=hardening=-pie
+  endif
+endif
+
 # common configure flags
 confflags += --prefix=/usr
 confflags += --sharedstatedir=/var/lib
 confflags += --program-suffix="$(suffix)"
+confflags += --with-modules
+#confflags += --with-file-notification=yes
 
 # These package names are used to create debian/control
 src_pkg_name = emacs$(suffix)
@@ -47,6 +59,7 @@ nox_pkg_name = $(gtk_pkg_name)-nox
 confflags_gtk += $(confflags)
 confflags_gtk += --with-x=yes
 confflags_gtk += --with-x-toolkit=gtk3
+#confflags_gtk += --with-xwidgets
 
 # Gtk dh options
 auto_gtk += --package=$(gtk_pkg_name)
