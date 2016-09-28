@@ -1,3 +1,10 @@
+emacs25 (25.1~1.gitf0eb70d-kk8) UNRELEASED; urgency=low
+
+   * Increment Debian version so that I can re-upload to Launchpad after
+     enabling debug symbols and additional architectures.
+
+ -- Kevin Kelley <kelleyk@kelleyk.net>  Wed, 28 Sep 2016 13:42:12 -0700
+
 emacs25 (25.1~1.gitf0eb70d-kk7) UNRELEASED; urgency=low
 
    * Modify packaging so that PIE-related flags are only added in
