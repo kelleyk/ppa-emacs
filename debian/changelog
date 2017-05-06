@@ -1,3 +1,11 @@
+emacs25 (25.2~1.gitc3574b5-kk1) UNRELEASED; urgency=low
+
+   ** SNAPSHOT build @c3574b5e5006b8e4055e83a66c39806d753bfc96 **
+
+   * Upstream release emacs-25.2.
+
+ -- Kevin Kelley <kelleyk@kelleyk.net>  Sat, 6 May 2017 10:15:54 -0700
+
 emacs25 (25.1~1.gitf0eb70d-kk8) UNRELEASED; urgency=low
 
    * Increment Debian version so that I can re-upload to Launchpad after
