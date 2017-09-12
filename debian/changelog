@@ -1,3 +1,12 @@
+emacs25 (25.3~1.gite0284ab-kk1) UNRELEASED; urgency=high
+
+   ** SNAPSHOT build @0284ab1261c4b94319a69abefe0a41fda491462 **
+
+   * Upstream release emacs-25.3.
+   * Fix arbitrary code execution issue in Enriched Text mode.
+
+ -- Kevin Kelley <kelleyk@kelleyk.net>  Sat, 6 May 2017 10:15:54 -0700
+
 emacs25 (25.2~1.gitc3574b5-kk1) UNRELEASED; urgency=low
 
    ** SNAPSHOT build @c3574b5e5006b8e4055e83a66c39806d753bfc96 **
