@@ -48,7 +48,7 @@ confflags += --prefix=/usr
 confflags += --sharedstatedir=/var/lib
 confflags += --program-suffix="$(suffix)"
 confflags += --with-modules
-#confflags += --with-file-notification=yes
+confflags += --with-file-notification=inotify
 confflags += --with-mailutils
 
 # These package names are used to create debian/control
