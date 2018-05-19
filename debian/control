@@ -31,6 +31,7 @@ Build-Depends: autoconf,
                texinfo,
                xaw3dg-dev,
                liblcms2-dev,
+               libmailutils-dev,
 Homepage: http://www.gnu.org/software/emacs/
 Standards-Version: 3.9.4
 
