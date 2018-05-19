@@ -33,6 +33,7 @@ Build-Depends: autoconf,
                liblcms2-dev,
                libmailutils-dev,
                libsystemd-dev,
+               libwebkit2gtk-4.0-dev,
 Homepage: http://www.gnu.org/software/emacs/
 Standards-Version: 3.9.4
 
