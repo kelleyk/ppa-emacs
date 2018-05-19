@@ -60,6 +60,7 @@ confflags_gtk += $(confflags)
 confflags_gtk += --with-x=yes
 confflags_gtk += --with-x-toolkit=gtk3
 #confflags_gtk += --with-xwidgets
+confflags_gtk += --with-lcms2
 
 # Gtk dh options
 auto_gtk += --package=$(gtk_pkg_name)
