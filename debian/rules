@@ -60,7 +60,7 @@ nox_pkg_name = $(gtk_pkg_name)-nox
 confflags_gtk += $(confflags)
 confflags_gtk += --with-x=yes
 confflags_gtk += --with-x-toolkit=gtk3
-#confflags_gtk += --with-xwidgets
+confflags_gtk += --with-xwidgets
 confflags_gtk += --with-lcms2
 
 # Gtk dh options
