@@ -1,3 +1,11 @@
+emacs26 (26.1~1.git07f8f9b-kk1) UNRELEASED; urgency=low
+
+   ** SNAPSHOT build @07f8f9bc5a51f5aa94eb099f3e15fbe0c20ea1ea **
+
+   * Upstream release emacs-26.1.
+
+ -- Kevin Kelley <kelleyk@kelleyk.net>  Mon, 28 May 2018 15:09:31 -0700
+
 emacs26 (26.1~rc1~1.git75edc26-kk1) UNRELEASED; urgency=low
 
    ** SNAPSHOT build @75edc261e1cab2cf4b1f10779e52156287134734 **
