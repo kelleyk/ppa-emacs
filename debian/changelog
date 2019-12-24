@@ -1,6 +1,23 @@
+emacs25 (25.3~2.gitc09215a-kk1) UNRELEASED; urgency=high
+
+   ** SNAPSHOT build @c09215ab5d0236df9be7ee61797752c5712f54e8 **
+
+   * Backport 26f9a77, which adds a new ELPA signing key to the keyring.
+     The existing key expired in 2019-09, so new installations of Emacs
+     versions prior to 26.3 throw errors while interacting with ELPA until
+     the updated key is manually added.  This was tracked as
+     https://github.com/kelleyk/ppa-emacs/issues/9.
+
+     I am incrementing the version number, and not simply the Debian
+     revision, because the keyring is a binary file, which quilt will not
+     handle patching.  It was therefore easier to cherry-pick the commit
+     onto the upstream branch, which results in a new source tarball.
+
+ -- Kevin Kelley <kelleyk@kelleyk.net>  Tue, 24 Dec 2019 07:18:40 -0800
+
 emacs25 (25.3~1.gite0284ab-kk1) UNRELEASED; urgency=high
 
-   ** SNAPSHOT build @0284ab1261c4b94319a69abefe0a41fda491462 **
+   ** SNAPSHOT build @e0284ab1261c4b94319a69abefe0a41fda491462 **
 
    * Upstream release emacs-25.3.
    * Fix arbitrary code execution issue in Enriched Text mode.
