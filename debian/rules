@@ -50,6 +50,8 @@ ifeq ($(shell dpkg --compare-versions "$(DISTRIB_RELEASE)" ge "16.10" && echo "y
   endif
 endif
 
+$(info *** Detected DISTRIB_RELEASE=$(DISTRIB_RELEASE))
+
 # @kelleyk: This version-detection machinery is borrowed from the
 # Debian/Ubuntu packaging.
 
@@ -127,10 +129,16 @@ nox_pkg_name = $(gtk_pkg_name)-nox
 confflags_gtk += $(confflags)
 confflags_gtk += --with-x=yes
 confflags_gtk += --with-x-toolkit=gtk3
-confflags_gtk += --with-xwidgets
 confflags_gtk += --with-lcms2
 confflags_gtk += --with-cairo
 confflags_gtk += --with-xpm=yes --with-gif=yes --with-gnutls=yes --with-jpeg=yes --with-png=yes --with-tiff=yes
+ifeq ($(shell dpkg --compare-versions "$(DISTRIB_RELEASE)" gt "16.04" && echo "yes"),yes)
+  # Upstream commit ae3edf0ac3 transitioned from the WebKitGTK+ API to
+  # JavaScriptCore, but the version of libjavascriptcoregtk-4.0-dev in
+  # 16.04 LTS (xenial) is too old.  See
+  # https://github.com/kelleyk/ppa-emacs/issues/15 for details.
+  confflags_gtk += --with-xwidgets
+endif
 
 # Gtk dh options
 auto_gtk += --package=$(gtk_pkg_name)
