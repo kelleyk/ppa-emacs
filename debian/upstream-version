@@ -1,0 +1,22 @@
+#!/usr/bin/perl -w
+
+use strict;
+use English;
+
+open(my $config_file, '<', 'configure.ac')
+    or die "cannot open configure.ac: $!";
+
+my $version = '';
+my $found_init = 0;
+while (<$config_file>)
+{
+  if(/^AC_INIT\(GNU Emacs,\s*(\d+\.\d+(\.\d+)?)\s*\,.*/o)
+  {
+    $found_init and die 'found duplicate AC_INIT() in configure.ac';
+    $version = $1;
+    $found_init = 1;
+  }
+}
+
+$found_init or die 'no AC_INIT() found in configure.ac';
+print "$version\n";
