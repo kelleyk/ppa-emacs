@@ -1,9 +1,16 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 
+SHELL := /bin/bash
+pf := set -o pipefail
 
-# This file is licensed under the terms of the Gnu Public License.
-# Copyright 2013 Robert Bruce Park <r@robru.ca>
+# This file is licensed under the terms of the GNU Public License.
+# Maintained by Kevin Kelley <kelleyk@kelleyk.net>.
+#
+# Based on packaging (c) 2013 Robert Bruce Park <r@robru.ca>.
+# Portions borrowed from the packaging that Rob Browning maintains for
+# the Debian project and/or the modifications made by the Ubuntu
+# developers for their fork of that packaging.
 
 
 # Some inspiration taken from the Emacs' debian/rules file created by
@@ -43,9 +50,67 @@ ifeq ($(shell dpkg --compare-versions "$(DISTRIB_RELEASE)" ge "16.10" && echo "y
   endif
 endif
 
+# @kelleyk: This version-detection machinery is borrowed from the
+# Debian/Ubuntu packaging.
+
+# For now we assume that emacs' versioning scheme is always
+# MAJOR.MINORtinyrev where MAJOR and MINOR are integers and tinyrev is
+# an optional lowercase letter (or letters).  We also assume that
+# upstream uses a numbering scheme that sorts in a "Debian friendly"
+# way.  So far that's always been true.  If it becomes false, some of
+# the values below will have to be set manually.
+
+# (You might imagine that a VPATH build would allow us to avoid having
+#  to copy the entire source tree for each of the three builds, but it
+#  turns out that the emacs build process doesn't entirely respect the
+#  VPATH and modifies all kinds of files in the srcdir (e.g. *.elc,
+#  *.map, etc.).
+
+# The official upstream version defined by AC_INIT in configure.in.
+upstream_ver := $(shell debian/upstream-version)
+ifeq (,$(upstream_ver))
+  $(error 'Unable to find upstream version number.')
+endif
+
+# This must be the version that's actually used at runtime for things
+# like load-path.  It may not be the same as the upstream version
+# (i.e. when you have upstream 20.5a, the functional version may still
+# be 20.5), so sometimes we may have to do this by hand.
+runtime_ver := $(shell $(pf); echo $(upstream_ver) | perl -pe 's/[a-z]+$$//o')
+major_ver := $(shell $(pf); echo $(runtime_ver) | perl -pe 's/\..*$$//o')
+minor_ver := $(shell $(pf); echo $(runtime_ver) | perl -pe 's/^[^.]*\.//o')
+
+# @kelleyk: Adding this as a sanity check after a build where this
+# wound up as the empty string.
+ifeq (,$(runtime_ver))
+  $(error 'Unable to find runtime version number.')
+endif
+
+# lisp paths
+local_lpath := /etc/emacs
+local_lpath := $(local_lpath):/usr/local/share/emacs/$(runtime_ver)/site-lisp
+local_lpath := $(local_lpath):/usr/local/share/emacs/site-lisp
+local_lpath := $(local_lpath):/usr/share/emacs/$(runtime_ver)/site-lisp
+local_lpath := $(local_lpath):/usr/share/emacs/site-lisp
+
+$(info *** Detected upstream_ver=$(upstream_ver))
+$(info *** Detected runtime_ver=$(runtime_ver))
+$(info *** Setting load-path=$(local_lpath))
+
+# @kelleyk: It's not clear to me what this does; this variable never
+#   seems to be referenced.
+# # Installation local_lpath
+# local_lpath_install \
+#   := $(pkgdir_common)/$(subst :,:$(pkgdir_common)/,$(local_lpath))
+
 # common configure flags
 confflags += --prefix=/usr
 confflags += --sharedstatedir=/var/lib
+confflags += --libexecdir=/usr/lib
+confflags += --localstatedir=/var/lib
+confflags += --infodir=/usr/share/info
+confflags += --mandir=/usr/share/man
+confflags += --enable-locallisppath="$(local_lpath)"
 confflags += --program-suffix="$(suffix)"
 confflags += --with-modules
 confflags += --with-file-notification=inotify
