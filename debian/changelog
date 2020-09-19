@@ -1,3 +1,11 @@
+emacs27 (27.1~1.git86d8d76aa3-kk2) UNRELEASED; urgency=low
+
+   * Remove XWidgets support for 16.04 LTS (xenial); the version of
+     libjavascriptcoregtk-4.0-dev available is too old to support the
+     JavaScriptCore API that XWidgets support is now based on.
+
+ -- Kevin Kelley <kelleyk@kelleyk.net>  Sat, 19 Sep 2020 08:58:41 -0700
+
 emacs27 (27.1~1.git86d8d76aa3-kk1) UNRELEASED; urgency=low
 
    ** SNAPSHOT build @86d8d76aa36037184db0b2897c434cdaab1a9ae8 **
