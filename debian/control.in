@@ -1,13 +1,12 @@
 Source: @SRC_PKG_NAME@
 Section: editors
 Priority: optional
-Maintainer: Robert Bruce Park <r@robru.ca>
+Maintainer: Kevin Kelley <kelleyk@kelleyk.net>
 Build-Depends: autoconf,
                automake,
                autotools-dev,
                debhelper (>= 9),
                dpkg-dev (>> 1.10.0),
-               imagemagick,
                libasound2-dev [!hurd-i386 !kfreebsd-i386 !kfreebsd-amd64],
                libdbus-1-dev,
                libgconf2-dev,
@@ -18,7 +17,6 @@ Build-Depends: autoconf,
                libjpeg-dev,
                liblockfile-dev,
                libm17n-dev,
-               libmagick++-dev,
                libncurses5-dev,
                libotf-dev,
                libpng-dev,
@@ -30,6 +28,14 @@ Build-Depends: autoconf,
                sharutils,
                texinfo,
                xaw3dg-dev,
+               liblcms2-dev,
+               libmailutils-dev,
+               libsystemd-dev,
+               libwebkit2gtk-4.0-dev,
+               libharfbuzz-dev,
+               libgmp-dev,
+               libjansson-dev,
+               libacl1-dev,
 Homepage: http://www.gnu.org/software/emacs/
 Standards-Version: 3.9.4
 
@@ -37,6 +43,7 @@ Package: @SRC_PKG_NAME@-common
 Architecture: all
 Depends: emacsen-common,
          ${misc:Depends},
+Provides: emacs-common
 Description: GNU Emacs editor (common files used by Gtk and NoX variants)
  GNU Emacs is the extensible self-documenting text editor.
  This package contains the files that are shared between Gtk and NoX builds.
@@ -46,7 +53,7 @@ Architecture: any
 Depends: @SRC_PKG_NAME@-common,
          ${misc:Depends},
          ${shlibs:Depends},
-Provides: editor, emacsen, info-browser, mail-reader, news-reader
+Provides: editor, emacsen, info-browser, mail-reader, news-reader, emacs-gtk, emacs
 Conflicts: @NOX_PKG_NAME@,
 Replaces: @NOX_PKG_NAME@,
 Description: GNU Emacs editor (with GTK+ user interface)
@@ -58,7 +65,7 @@ Architecture: any
 Depends: @SRC_PKG_NAME@-common,
          ${misc:Depends},
          ${shlibs:Depends},
-Provides: editor, emacsen, info-browser, mail-reader, news-reader
+Provides: editor, emacsen, info-browser, mail-reader, news-reader, emacs-nox, emacs
 Conflicts: @GTK_PKG_NAME@,
 Replaces: @GTK_PKG_NAME@,
 Description: GNU Emacs editor (with text-only user interface)
@@ -69,6 +76,7 @@ Package: @SRC_PKG_NAME@-el
 Architecture: all
 Depends: @SRC_PKG_NAME@-common,
          ${misc:Depends},
+Provides: emacs-el
 Description: GNU Emacs editor (uncompiled Elisp files)
  GNU Emacs is the extensible self-documenting text editor.
  Optional elisp source files that are not byte-compiled.

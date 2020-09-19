@@ -1,13 +1,12 @@
-Source: emacs26
+Source: emacs27
 Section: editors
 Priority: optional
-Maintainer: Robert Bruce Park <r@robru.ca>
+Maintainer: Kevin Kelley <kelleyk@kelleyk.net>
 Build-Depends: autoconf,
                automake,
                autotools-dev,
                debhelper (>= 9),
                dpkg-dev (>> 1.10.0),
-               imagemagick,
                libasound2-dev [!hurd-i386 !kfreebsd-i386 !kfreebsd-amd64],
                libdbus-1-dev,
                libgconf2-dev,
@@ -18,7 +17,6 @@ Build-Depends: autoconf,
                libjpeg-dev,
                liblockfile-dev,
                libm17n-dev,
-               libmagick++-dev,
                libncurses5-dev,
                libotf-dev,
                libpng-dev,
@@ -34,45 +32,51 @@ Build-Depends: autoconf,
                libmailutils-dev,
                libsystemd-dev,
                libwebkit2gtk-4.0-dev,
+               libharfbuzz-dev,
+               libgmp-dev,
+               libjansson-dev,
+               libacl1-dev,
 Homepage: http://www.gnu.org/software/emacs/
 Standards-Version: 3.9.4
 
-Package: emacs26-common
+Package: emacs27-common
 Architecture: all
 Depends: emacsen-common,
          ${misc:Depends},
+Provides: emacs-common
 Description: GNU Emacs editor (common files used by Gtk and NoX variants)
  GNU Emacs is the extensible self-documenting text editor.
  This package contains the files that are shared between Gtk and NoX builds.
 
-Package: emacs26
+Package: emacs27
 Architecture: any
-Depends: emacs26-common,
+Depends: emacs27-common,
          ${misc:Depends},
          ${shlibs:Depends},
-Provides: editor, emacsen, info-browser, mail-reader, news-reader
-Conflicts: emacs26-nox,
-Replaces: emacs26-nox,
+Provides: editor, emacsen, info-browser, mail-reader, news-reader, emacs-gtk, emacs
+Conflicts: emacs27-nox,
+Replaces: emacs27-nox,
 Description: GNU Emacs editor (with GTK+ user interface)
  GNU Emacs is the extensible self-documenting text editor.
  This package contains a version of Emacs with a GTK+ user interface.
 
-Package: emacs26-nox
+Package: emacs27-nox
 Architecture: any
-Depends: emacs26-common,
+Depends: emacs27-common,
          ${misc:Depends},
          ${shlibs:Depends},
-Provides: editor, emacsen, info-browser, mail-reader, news-reader
-Conflicts: emacs26,
-Replaces: emacs26,
+Provides: editor, emacsen, info-browser, mail-reader, news-reader, emacs-nox, emacs
+Conflicts: emacs27,
+Replaces: emacs27,
 Description: GNU Emacs editor (with text-only user interface)
  GNU Emacs is the extensible self-documenting text editor.
  This package contains a version of Emacs without a graphical user interface.
 
-Package: emacs26-el
+Package: emacs27-el
 Architecture: all
-Depends: emacs26-common,
+Depends: emacs27-common,
          ${misc:Depends},
+Provides: emacs-el
 Description: GNU Emacs editor (uncompiled Elisp files)
  GNU Emacs is the extensible self-documenting text editor.
  Optional elisp source files that are not byte-compiled.

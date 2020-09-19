@@ -1,31 +1,7 @@
-emacs26 (26.3~1.git96dd019-kk1) UNRELEASED; urgency=low
+emacs27 (27.1~1.git86d8d76aa3-kk1) UNRELEASED; urgency=low
 
-   ** SNAPSHOT build @96dd0196c28bc36779584e47fffcca433c9309cd **
+   ** SNAPSHOT build @86d8d76aa36037184db0b2897c434cdaab1a9ae8 **
 
-   * Upstream release emacs-26.3.
+   * Upstream release emacs-27.1.
 
- -- Kevin Kelley <kelleyk@kelleyk.net>  Mon, 16 Sep 2019 13:14:45 -0700
-
-emacs26 (26.2~1.gitfd1b34b-kk1) UNRELEASED; urgency=low
-
-   ** SNAPSHOT build @fd1b34bfba8f3f6298df47c8e10b61530426f749 **
-
-   * Upstream release emacs-26.2.
-
- -- Kevin Kelley <kelleyk@kelleyk.net>  Fri, 12 Apr 2019 11:32:54 -0700
-
-emacs26 (26.1~1.git07f8f9b-kk1) UNRELEASED; urgency=low
-
-   ** SNAPSHOT build @07f8f9bc5a51f5aa94eb099f3e15fbe0c20ea1ea **
-
-   * Upstream release emacs-26.1.
-
- -- Kevin Kelley <kelleyk@kelleyk.net>  Mon, 28 May 2018 15:09:31 -0700
-
-emacs26 (26.1~rc1~1.git75edc26-kk1) UNRELEASED; urgency=low
-
-   ** SNAPSHOT build @75edc261e1cab2cf4b1f10779e52156287134734 **
-
-   * Upstream pre-release emacs-26.1-rc1.
-
- -- Kevin Kelley <kelleyk@kelleyk.net>  Sat, 19 May 2018 13:32:48 -0700
+ -- Kevin Kelley <kelleyk@kelleyk.net>  Sat, 19 Sep 2020 05:16:32 -0700
