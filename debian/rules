@@ -50,6 +50,8 @@ confflags += --program-suffix="$(suffix)"
 confflags += --with-modules
 confflags += --with-file-notification=inotify
 confflags += --with-mailutils
+confflags += --with-harfbuzz
+confflags += --with-json
 
 # These package names are used to create debian/control
 src_pkg_name = emacs$(suffix)
@@ -62,6 +64,8 @@ confflags_gtk += --with-x=yes
 confflags_gtk += --with-x-toolkit=gtk3
 confflags_gtk += --with-xwidgets
 confflags_gtk += --with-lcms2
+confflags_gtk += --with-cairo
+confflags_gtk += --with-xpm=yes --with-gif=yes --with-gnutls=yes --with-jpeg=yes --with-png=yes --with-tiff=yes
 
 # Gtk dh options
 auto_gtk += --package=$(gtk_pkg_name)
