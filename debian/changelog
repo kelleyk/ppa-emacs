@@ -1,3 +1,11 @@
+emacs27 (27.2~1.gitdeef5efafb-kk1) UNRELEASED; urgency=low
+
+   ** SNAPSHOT build @deef5efafb70f4b171265b896505b92b6eef24e6 **
+
+   * Upstream release emacs-27.2.
+
+ -- Kevin Kelley <kelleyk@kelleyk.net>  Thu, 22 Apr 2021 09:54:16 -0700
+
 emacs27 (27.1~1.git86d8d76aa3-kk2) UNRELEASED; urgency=low
 
    * Remove XWidgets support for 16.04 LTS (xenial); the version of
